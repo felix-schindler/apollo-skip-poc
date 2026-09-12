@@ -1,6 +1,9 @@
 import Apollo
 import ApolloAPI
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// Reads the GitLab personal access token from the same `UserDefaults` key
 /// that `ContentView`'s `@AppStorage("token")` writes to, so the interceptor

@@ -15,13 +15,13 @@ let package = Package(
     .library(name: "GitLabAPI", targets: ["GitLabAPI"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/apollographql/apollo-ios", exact: "2.4.0"),
+    .package(url: "https://github.com/felix-schindler/apollo-skip-fuse.git", branch: "main"),
   ],
   targets: [
     .target(
       name: "GitLabAPI",
       dependencies: [
-        .product(name: "ApolloAPI", package: "apollo-ios"),
+        .product(name: "ApolloAPI", package: "apollo-skip-fuse"),
       ],
       path: "./Sources"
     ),
