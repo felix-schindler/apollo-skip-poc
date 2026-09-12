@@ -10,6 +10,7 @@ public extension Interfaces {
     implementingObjects: [
       "AlertManagementAlert",
       "BoardEpic",
+      "Commit",
       "CountableVulnerability",
       "Design",
       "Epic",

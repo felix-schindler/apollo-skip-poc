@@ -6,7 +6,10 @@ import ApolloAPI
 public extension Objects {
   nonisolated static let Commit = ApolloAPI.Object(
     typename: "Commit",
-    implementedInterfaces: [Interfaces.Todoable.self],
+    implementedInterfaces: [
+      Interfaces.NoteableInterface.self,
+      Interfaces.Todoable.self
+    ],
     keyFields: nil
   )
 }
