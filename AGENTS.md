@@ -20,10 +20,10 @@ Skip (skip.dev) dual-platform app: one SwiftUI codebase in `Sources/TanukiApp/` 
 ## Apollo GraphQL
 
 - Operations live in `Sources/TanukiApp/Queries/*.graphql`; generated types are public API of the `GitLabAPI` module (`import GitLabAPI`, e.g. `CurrentUserQuery`).
-- After changing an operation, regenerate from the repo root: `./apollo-ios-cli generate` (reads `apollo-codegen-config.json`). Add `-f` or run `./apollo-ios-cli fetch-schema` to re-download the schema from `https://gitlab.com/api/graphql` first (network required).
+- After changing an operation, regenerate from the repo root via `scripts/generate.sh` (a wrapper around `./apollo-ios-cli generate`; reads `apollo-codegen-config.json`). Pass `-f` to fetch the schema from `https://gitlab.com/api/graphql` first (network required). The codegen `swiftPackage` module type always rewrites `GitLabAPI/Package.swift` to upstream `apollographql/apollo-ios`, so running `apollo-ios-cli generate` directly breaks the fork setup; the wrapper restores the committed manifest and re-resolves.
 - `apollo-ios-cli` v2.4.0 is checked in at the repo root — use it. Generated sources under `GitLabAPI/Sources/{Schema,Operations}` are checked in and marked `@generated`, so don't hand-edit them.
 - `gitlab@current.graphqls` is the ~2.5 MB GitLab SDL: grep it, never read it whole.
-- `GitLabAPI/Package.swift` pins apollo-ios `exact: 2.4.0`; the root package requires `from: 2.4.0`. Bump both together.
+- Both `Package.swift` files depend on the `apollo-skip-fuse` fork (`https://github.com/felix-schindler/apollo-skip-fuse.git`, `branch: "main"`), not upstream apollo-ios. Don't switch back to a relative path dependency: skipstone Android staging resolves it from the staged directory and fails.
 
 ## Current state
 

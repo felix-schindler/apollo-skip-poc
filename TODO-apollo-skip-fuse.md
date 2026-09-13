@@ -15,8 +15,7 @@ References:
 - Fork porting notes: `../apollo-skip-fuse/AGENTS.md`
 - This app's conventions: `AGENTS.md` (operations in `Sources/TanukiApp/Queries/`, generated code in
   `GitLabAPI/` is `@generated` — never hand-edit it, use the CLI).
-- This directory is **not** a git repo, so do not rely on `git status` for diffs. Snapshot before/after
-  and use `diff -r` instead.
+- This directory is a git repo; use `git status`/`git diff` for before/after snapshots.
 
 Do not fix fork issues from inside this repo. Test, record the failure in **Findings** below, and also
 append it to `../apollo-skip-fuse/TODO-from-apollo-test.md` (create it) so the fork maintainer sees it.
@@ -295,6 +294,10 @@ For each issue, add a block:
   well-formed JSON body with full query + `clientLibrary` extension) work fine on Android, and the echo
   response round-tripped into the UI (`echo-user` displayed).
 - Suspected area: fork (User-Agent construction for non-Darwin).
+- Resolved 2026-09-13 (NOT a fork issue): a raw `URLSession.dataTask` from a test binary on the same
+  SM-G970F logs `ApolloAPIAndroidTestPackageTests.xctest (unknown version) curl/8.9.1` — corelibs never
+  emits CFNetwork/Darwin strings. The `TanukiApp/1 CFNetwork/3860.600.12 Darwin/25.6.0` capture matched
+  an iOS-simulator request to the same shared echo server. No fork change needed.
 
 ### Android opens TWO WebSocket connections per subscribe (iOS opens one)
 - Platform: Android 12 device (iOS simulator unaffected — exactly one connection there)
@@ -313,3 +316,9 @@ For each issue, add a block:
 - Suspected area: fork (Android `URLSessionWebSocketTask` layer or transport startup path — e.g. a
   silently-dead first receive loop, or a double `webSocketTask` creation; iOS is clean so transport
   core logic is likely fine). Deliberately not investigated further here — fork maintainer's call.
+- Resolved 2026-09-13 (NOT a fork issue): controlled `skip android test` probe on the same physical
+  device (`LiveWebSocketDiagnostics`): raw task ×1 connection, `WebSocketTransport` with
+  `URLSession(configuration:)` ×1, with `URLSession.shared` ×1 — 3 CONNECTs total, one subscribe each.
+  The fork's transport opens exactly one connection per transport; the app's pair of same-id
+  connections points at a second transport or a leftover process. Re-check app-side (init marker) only
+  if it recurs.
