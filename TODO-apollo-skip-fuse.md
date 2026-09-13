@@ -17,8 +17,8 @@ References:
   `GitLabAPI/` is `@generated` — never hand-edit it, use the CLI).
 - This directory is a git repo; use `git status`/`git diff` for before/after snapshots.
 
-Do not fix fork issues from inside this repo. Test, record the failure in **Findings** below, and also
-append it to `../apollo-skip-fuse/TODO-from-apollo-test.md` (create it) so the fork maintainer sees it.
+Do not fix fork issues from inside this repo. Test, record the failure in **Findings** below; durable
+fork-side conclusions belong in `../apollo-skip-fuse/AGENTS.md` (Known open items / porting notes).
 
 ---
 
